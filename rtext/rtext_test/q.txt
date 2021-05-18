@@ -1,0 +1,48 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+int replace(std::string filename, std::string source, std::string dst) {
+    int replaced = 0;
+    std::ifstream input;
+    std::ofstream output;
+    input.open(filename,std::istream::in);
+    output.open(filename.append(".mf.txt"),std::istream::out);
+    if (!input.is_open() ) {
+        std::cout << "Can't open file I" << std::endl;
+        input.close();
+        output.close();
+        exit(1);
+    }
+    if (!output.is_open()) {
+        std::cout << "Can't open file II" << std::endl;
+        input.close();
+        output.close();
+        exit(1);
+    }
+
+    std::string buffer;
+    while (!input.eof()) {
+        std::getline(input, buffer);
+        int n = buffer.find(source);
+        if (n != std::string::npos) {
+            buffer.replace(n, n + source.length(), dst);
+            replaced++;
+        }
+        output << buffer;
+    }
+    input.close();
+    output.close();
+    return replaced;
+}
+
+int main(int argc, char *argv[]) {
+    std::ios::sync_with_stdio(false);
+    switch (argc) {
+        case 4:
+            std::cout << replace(argv[1], argv[2], argv[3]) << "ocasion(s) replaced!" << std::endl;
+        default:
+            std::cout << "Wrong parametrs!\nWaiting: filename source_string dst_string" << std::endl;
+    }
+    return 0;
+}

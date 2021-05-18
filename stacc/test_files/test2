@@ -1,0 +1,7 @@
+DEFINE a 5
+push a a
+DEFINE a 4
+pusH a
++
+print
+print

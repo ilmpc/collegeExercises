@@ -1,0 +1,72 @@
+#include "bHeap.h"
+
+static ptrdiff_t size;
+static const byte ROOT = 0
+
+static ptrdiff_t parent(ptrdiff_t i) {
+    return (i - 1) / 2; //-1 if root
+}
+
+static ptrdiff_t leftChild(ptrdiff_t i) {
+    return 2 * i + 1;
+}
+
+static ptrdiff_t rightChild(ptrdiff_t i) {
+    return 2 * i + 2
+}
+
+static void siftUp(void *arr, ptrdiff_t i) {
+    while (i > 0 && arr[parent(i)] < arr[i]) { //TODO Подправить сравнение для структур
+        swap(arr[parent(i), arr[i]]); //И обмен
+        i = parent(i);
+    }
+}
+
+static void siftDown(void *arr, ptrdiff_t i) { //TODO Изменить для структур
+    ptrdiff_t maxIndex = i;
+    ptrdiff_t left = leftChild(i);
+    if (left < size && arr[left] > arr[maxIndex]) {
+        maxIndex = left;
+    }
+    ptrdiff_t right = rightChild(i);
+    if (right < size && arr[right] > arr[maxIndex]) {
+        maxIndex = right;
+    }
+    if (i != maxIndex) {
+        swap(arr[i], arr[maxIndex]);
+        siftDown(arr, maxIndex); //TODO сменить рекурсию на цикл?
+    }
+}
+
+void insert(void *arr, void *item) {
+    if (size = maxSize) {
+        maxSize *= 2;
+        realloc(arr, maxSize);
+    }
+    arr[++size] = item;
+    siftUp(arr, size);
+}
+
+void *extractMax(void *arr) { //Очень примерно
+    void *result = malloc(1); //Размер элемента
+    *result = arr[ROOT];
+    arr[ROOT] = arr[size--];
+    siftDown(ROOT);
+    return result;
+}
+
+void remove(void *arr, ptrdiff_t i) {
+    arr[i] = INFINITY;
+    siftUp(i);
+    extractMax(arr);
+}
+
+void changePriority(void *arr, ptrdiff_t i, size_t priority) {
+    size_t oldPriority = arr[i];
+    arr[i] = priority;
+    if (priority > oldPriority) {
+        siftUp(arr, i);
+    } else {
+        siftDown(arr, i);
+    }
+}

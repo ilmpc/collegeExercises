@@ -1,0 +1,6 @@
+#!/bin/bash
+cd ../cmake-build-debug
+for ((i = 0; i < 31;i++))
+do
+./QSort ../test_files/TestCase$i.txt i
+done
